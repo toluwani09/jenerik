@@ -1,0 +1,42 @@
+generate workflows yml file for github actions that runs on push to main branch and pull request to main branch for build, test and deploy steps using maven, tomcat and jdk 17 and also include steps for caching maven dependencies
+```yaml
+name: Java CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Deploy to Tomcat
+      run: |
+        echo "Deploying to Tomcat..."
+        # Add your deployment script here
