@@ -1,5 +1,3 @@
-generate workflows yml file for github actions that runs on push to main branch and pull request to main branch for build, test and deploy steps using maven, tomcat and jdk 17 and also include steps for caching maven dependencies
-```yaml
 name: Java CI
 
 on:
